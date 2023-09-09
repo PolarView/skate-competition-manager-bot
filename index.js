@@ -11,23 +11,23 @@ let auth;
 let googleSheets;
 let spreadsheetId;
 
-const googleApiInitialize = async () => {
-  // google api intiallization
-  auth = new google.auth.GoogleAuth({
-    keyFile: "credentials.json",
-    scopes: "https://www.googleapis.com/auth/spreadsheets"
-  });
+// const googleApiInitialize = async () => {
+//   // google api intiallization
+//   auth = new google.auth.GoogleAuth({
+//     keyFile: "credentials.json",
+//     scopes: "https://www.googleapis.com/auth/spreadsheets"
+//   });
 
-  // Create client instance for auth
-  const client = await auth.getClient();
+//   // Create client instance for auth
+//   const client = await auth.getClient();
 
-  // Instance of Google Sheets API
-  googleSheets = google.sheets({ version: "v4", auth: client });
+//   // Instance of Google Sheets API
+//   googleSheets = google.sheets({ version: "v4", auth: client });
 
-  spreadsheetId = "1eED-7pFb_yj_RlfDciCfr7NStskXmLunt2s9Yo4valo";
-};
+//   spreadsheetId = "1eED-7pFb_yj_RlfDciCfr7NStskXmLunt2s9Yo4valo";
+// };
 
-googleApiInitialize();
+// googleApiInitialize();
 
 // Replace 'YOUR_BOT_TOKEN' with your actual bot token from BotFather
 const token = process.env.TELEGRAM_BOT_TOKEN;
@@ -64,6 +64,53 @@ bot.on("message", async (msg) => {
   if (!message && message === "/start") {
     // Ignore non-text or empty messages
     return;
+  }
+
+  if (message === "/open_street_registration") {
+    try {
+      const { data, error } = await supabase
+        .from("competitions")
+        .update({ isStreetRegistrationOpen: true })
+        .eq("isCurrent", true)
+        .select();
+    } catch (err) {
+      console.log(err, "during /open_street_registration");
+    }
+  }
+
+  if (message === "/close_street_registration") {
+    try {
+      const { data, error } = await supabase
+        .from("competitions")
+        .update({ isStreetRegistrationOpen: false })
+        .eq("isCurrent", true)
+        .select();
+    } catch (err) {
+      console.log(err, "during /close_street_registration");
+    }
+  }
+
+  if (message === "/close_park_registration") {
+    try {
+      const { data, error } = await supabase
+        .from("competitions")
+        .update({ isParkRegistrationOpen: false })
+        .eq("isCurrent", true)
+        .select();
+    } catch (err) {
+      console.log(err, "during /close_park_registration");
+    }
+  }
+  if (message === "/open_park_registration") {
+    try {
+      const { data, error } = await supabase
+        .from("competitions")
+        .update({ isParkRegistrationOpen: true })
+        .eq("isCurrent", true)
+        .select();
+    } catch (err) {
+      console.log(err, "during /open_park_registration");
+    }
   }
 });
 
