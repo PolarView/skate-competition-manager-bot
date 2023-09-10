@@ -14,7 +14,7 @@ let spreadsheetId;
 let isAdmin = false;
 
 // Replace 'YOUR_BOT_TOKEN' with your actual bot token from BotFather
-const token = process.env.TELEGRAM_BOT_TOKEN;
+const token = process.env.TELEGRAM_BOT_TOKEN_MANAGER;
 
 // Create a bot instance
 const bot = new TelegramBot(token, { polling: true });
